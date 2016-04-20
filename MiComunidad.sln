@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiComunidad", "MiComunidad\MiComunidad.csproj", "{107B433A-CB78-40A0-B98D-F9ADBCC385D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiComunidad.Tests", "MiComunidad.Tests\MiComunidad.Tests.csproj", "{6C3CC19C-27F8-4DA4-A89B-CA73F7F7A876}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{107B433A-CB78-40A0-B98D-F9ADBCC385D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{107B433A-CB78-40A0-B98D-F9ADBCC385D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{107B433A-CB78-40A0-B98D-F9ADBCC385D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{107B433A-CB78-40A0-B98D-F9ADBCC385D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C3CC19C-27F8-4DA4-A89B-CA73F7F7A876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C3CC19C-27F8-4DA4-A89B-CA73F7F7A876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C3CC19C-27F8-4DA4-A89B-CA73F7F7A876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C3CC19C-27F8-4DA4-A89B-CA73F7F7A876}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
