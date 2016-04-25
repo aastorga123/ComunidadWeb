@@ -339,6 +339,34 @@ a {
   text-decoration: none;
 }
 
+a.classImgDetalle
+{
+    background: url('../Images/detalle.png') no-repeat; 
+    display: block;
+    text-indent: -9999px;
+    height:31px;
+    width:31px;
+
+}
+
+a.classImgEditar
+{
+    background: url('../Images/editar.png') no-repeat;
+    display: block;
+    text-indent: -9999px;
+    height:31px;
+    width:31px;
+}
+
+a.classImgEliminar
+{
+    background: url('../Images/eliminar.gif') no-repeat;
+    display: block;
+    text-indent: -9999px;
+    height:31px;
+    width:31px;
+}
+
 a:hover,
 a:focus {
   color: #2a6496;

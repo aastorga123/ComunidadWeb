@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -15,6 +16,8 @@ namespace MiComunidad
     {
         protected void Application_Start()
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<Models.MiComunidadContext,
+                      Migrations.Configuration>());//Actualizar la BD
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
