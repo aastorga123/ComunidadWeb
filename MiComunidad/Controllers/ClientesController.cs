@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Mvc;
 using MiComunidad.Models;
 using System.Collections.Generic;
+using PagedList;
 
 namespace MiComunidad.Controllers
 {
@@ -13,30 +14,103 @@ namespace MiComunidad.Controllers
 
         // GET: Clientes
 
-        public ActionResult AddCliente()
+        public ActionResult AddCliente(string Sorting_Order, string q, int page = 1, int pageSize = 3)
         {
+      
             var ClienteView = new ViewModels.ClienteView();
-            ClienteView.Cliente = new Models.Cliente();
             ClienteView.Clientes = new List<Models.Cliente>();
-            ClienteView.Clientes = db.Clientes.ToList();
+            ClienteView.Cliente = new Models.Cliente();
+
+            ViewBag.SortingRut = string.IsNullOrEmpty(Sorting_Order) ? "Rut_Description" : "";
+            ViewBag.SortingNombre = string.IsNullOrEmpty(Sorting_Order) ? "Nombre_Description" : "";
+            ViewBag.SortingUbicacion = string.IsNullOrEmpty(Sorting_Order) ? "Ubicacion_Description" : "";
+            ViewBag.CurrentSort = Sorting_Order;
+
+            
+            var clientes = from cli in db.Clientes select cli;
+            switch (Sorting_Order)
+            {
+                case "Rut_Description":
+                    clientes = clientes.OrderByDescending(cli => cli.Rut);
+                    break;
+                case "Nombre_Description":
+                    clientes = clientes.OrderByDescending(cli => cli.Nombre);
+                    break;
+                case "Ubicacion_Description":
+                    clientes = clientes.OrderByDescending(cli => cli.Ubicacion);
+                    break;
+                default:
+                    clientes = clientes.OrderBy(cli => cli.Nombre);
+                    break;
+            }
+            
+            ClienteView.PageNumber = page;
+            ClienteView.PageCount = pageSize;
+
+            ClienteView.Clientes = clientes.ToPagedList(ClienteView.PageNumber, ClienteView.PageCount).ToList(); 
+
+            ClienteView.PageCliente = clientes.ToPagedList(ClienteView.PageNumber, ClienteView.PageCount);
+
+            //ClienteView.PageCliente = PagedList.PagedListExtensions.ToPagedList(clientes,
+            //ClienteView.PageNumber, ClienteView.PageCount);
+
+
             return View(ClienteView);
+
         }
+
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddCliente(Cliente cliente)
+        public ActionResult AddCliente(Cliente cliente, int? id)
         {
             var ClienteView = new ViewModels.ClienteView();
-            ClienteView.Cliente = new Models.Cliente();
+            ClienteView.Cliente = cliente;
             ClienteView.Clientes = new List<Models.Cliente>();
+            string rut = cliente.Rut;
+            ClienteView.Cliente.ClienteID=(int)id;
+
             ClienteView.Clientes = db.Clientes.ToList();
            
             if (ModelState.IsValid)
             {
-                db.Clientes.Add(cliente);
-                db.SaveChanges();
-                return RedirectToAction("AddCliente");
+                //var rutExiste = ClienteView.Clientes.SingleOrDefault(c => c.Rut == rut);
+                Cliente BuscarclienteDB = db.Clientes.Find(id);
+                if (BuscarclienteDB != null)
+                {
+                    if (cliente.Rut == rut)
+                    {
+                        //Eliminar Registro
+                        ClienteView.Cliente = db.Clientes.Find(id);
+                        db.Clientes.Remove(ClienteView.Cliente);
+                        db.Entry(ClienteView.Cliente).State = EntityState.Deleted;
+                        db.SaveChanges();
+                        //Volver a Crear Registro con los datos nuevos
+                        ClienteView.Cliente = cliente;
+                        db.Clientes.Add(ClienteView.Cliente);
+                        db.Entry(ClienteView.Cliente).State = EntityState.Added;
+                        db.SaveChanges();
+                        //Modificar registro
+                        ClienteView.Cliente = cliente;
+                        db.Entry(ClienteView.Cliente).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("AddCliente");
+                        //return View("AddCliente", ClienteView);
+                        
 
+                    }
+                }
+                else
+                {
+                    ClienteView.Cliente = cliente;
+                    db.Clientes.Add(ClienteView.Cliente);
+                    db.Entry(ClienteView.Cliente).State = EntityState.Added;
+                    db.SaveChanges();
+                    Session["cliente"] = ClienteView.Cliente;
+                    return RedirectToAction("AddCliente");
+                    //return View("AddCliente", ClienteView);
+                }
             }
 
             return View(ClienteView);
@@ -106,18 +180,70 @@ namespace MiComunidad.Controllers
         //}
 
         // GET: Clientes/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, string Sorting_Order, string q, int page = 1, int pageSize = 3)
         {
-            if (id == null)
+            var ClienteView = new ViewModels.ClienteView();
+            ClienteView.Cliente = new Models.Cliente();
+            ClienteView.Clientes = new List<Models.Cliente>();
+            ClienteView.Clientes = db.Clientes.ToList();
+
+            ViewBag.SortingRut = string.IsNullOrEmpty(Sorting_Order) ? "Rut_Description" : "";
+            ViewBag.SortingNombre = string.IsNullOrEmpty(Sorting_Order) ? "Nombre_Description" : "";
+            ViewBag.SortingUbicacion = string.IsNullOrEmpty(Sorting_Order) ? "Ubicacion_Description" : "";
+            ViewBag.CurrentSort = Sorting_Order;
+
+
+            var clientes = from cli in db.Clientes select cli;
+            switch (Sorting_Order)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                case "Rut_Description":
+                    clientes = clientes.OrderByDescending(cli => cli.Rut);
+                    break;
+                case "Nombre_Description":
+                    clientes = clientes.OrderByDescending(cli => cli.Nombre);
+                    break;
+                case "Ubicacion_Description":
+                    clientes = clientes.OrderByDescending(cli => cli.Ubicacion);
+                    break;
+                default:
+                    clientes = clientes.OrderBy(cli => cli.Nombre);
+                    break;
             }
+
+            ClienteView.PageNumber = page;
+            ClienteView.PageCount = pageSize;
+
+            ClienteView.Clientes = clientes.ToPagedList(ClienteView.PageNumber, ClienteView.PageCount).ToList();
+
+            ClienteView.PageCliente = clientes.ToPagedList(ClienteView.PageNumber, ClienteView.PageCount);
+
+            
             Cliente cliente = db.Clientes.Find(id);
             if (cliente == null)
             {
-                return HttpNotFound();
+                //return HttpNotFound();
             }
-            return View(cliente);
+            if (id == null)
+            {
+                //return View("AddCliente", ClienteView);
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ClienteView.Cliente = cliente;
+            //return View("AddCliente", ClienteView);
+            //return View(ClienteView.Cliente);
+
+            return AddNote("Details", ClienteView.Cliente);
+        }
+
+        public ActionResult AddNote(string vista, object modelo)
+        {
+            return PartialView(vista,modelo);
+        }
+
+        [HttpPost]
+        public ActionResult AddNote(Cliente cliente)
+        {
+            return RedirectToAction("AddCliente");
         }
 
         // GET: Clientes/Create
@@ -144,12 +270,42 @@ namespace MiComunidad.Controllers
         }
 
         // GET: Clientes/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, string Sorting_Order, string q, int page = 1, int pageSize = 3)
         {
             var ClienteView = new ViewModels.ClienteView();
             ClienteView.Cliente = new Models.Cliente();
             ClienteView.Clientes = new List<Models.Cliente>();
             ClienteView.Clientes = db.Clientes.ToList();
+
+            ViewBag.SortingRut = string.IsNullOrEmpty(Sorting_Order) ? "Rut_Description" : "";
+            ViewBag.SortingNombre = string.IsNullOrEmpty(Sorting_Order) ? "Nombre_Description" : "";
+            ViewBag.SortingUbicacion = string.IsNullOrEmpty(Sorting_Order) ? "Ubicacion_Description" : "";
+            ViewBag.CurrentSort = Sorting_Order;
+
+
+            var clientes = from cli in db.Clientes select cli;
+            switch (Sorting_Order)
+            {
+                case "Rut_Description":
+                    clientes = clientes.OrderByDescending(cli => cli.Rut);
+                    break;
+                case "Nombre_Description":
+                    clientes = clientes.OrderByDescending(cli => cli.Nombre);
+                    break;
+                case "Ubicacion_Description":
+                    clientes = clientes.OrderByDescending(cli => cli.Ubicacion);
+                    break;
+                default:
+                    clientes = clientes.OrderBy(cli => cli.Nombre);
+                    break;
+            }
+
+            ClienteView.PageNumber = page;
+            ClienteView.PageCount = pageSize;
+
+            ClienteView.Clientes = clientes.ToPagedList(ClienteView.PageNumber, ClienteView.PageCount).ToList();
+
+            ClienteView.PageCliente = clientes.ToPagedList(ClienteView.PageNumber, ClienteView.PageCount);
 
             if (id == null)
             {
@@ -169,15 +325,45 @@ namespace MiComunidad.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ClienteID,Rut,Nombre,Ubicacion,Url,Email")] Cliente cliente)
+        public ActionResult Edit(Cliente cliente, int? id)
         {
+            //[Bind(Include = "ClienteID,Rut,Nombre,Ubicacion,Url,Email")] Cliente cliente
+            var ClienteView = new ViewModels.ClienteView();
+            ClienteView.Cliente = cliente;//new Models.Cliente();
+            ClienteView.Clientes = new List<Models.Cliente>();
+            ClienteView.Clientes = db.Clientes.ToList();
+            
+            string rut = cliente.Rut;
+
             if (ModelState.IsValid)
             {
-                db.Entry(cliente).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                // var rutExiste = ClienteView.Clientes.SingleOrDefault(c => c.Rut == rut);
+                Cliente BuscarBlienteDB = db.Clientes.Find(id);
+                if (BuscarBlienteDB != null)
+                {
+                    if (ClienteView.Cliente.Rut == rut)
+                    {
+                        foreach (var c in ClienteView.Clientes)
+                        {
+                            db.Entry(c).State = EntityState.Modified;
+                        }
+
+                        ClienteView.Cliente.ClienteID = (int)id;
+                        cliente.ClienteID = (int)id;
+                        db.Entry(cliente).State = EntityState.Added;
+                        db.SaveChanges();
+                        db.Entry(cliente).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("AddCliente");
+                    }
+                }
+               else
+                {
+                    return RedirectToAction("AddCliente");
+                }
             }
-            return View(cliente);
+            return View("AddCliente", ClienteView);
+            //return View(ClienteView);
         }
 
         // GET: Clientes/Delete/5
@@ -199,6 +385,7 @@ namespace MiComunidad.Controllers
             }
             ClienteView.Cliente = db.Clientes.Find(id);
             db.Clientes.Remove(ClienteView.Cliente);
+            db.Entry(ClienteView.Cliente).State = EntityState.Deleted;
             db.SaveChanges();
             return RedirectToAction("AddCliente");
             //return View("AddCliente", ClienteView);
@@ -225,6 +412,7 @@ namespace MiComunidad.Controllers
         {
             Cliente cliente = db.Clientes.Find(id);
             db.Clientes.Remove(cliente);
+            db.Entry(cliente).State = EntityState.Deleted;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

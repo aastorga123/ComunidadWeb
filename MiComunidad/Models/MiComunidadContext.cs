@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Web;
@@ -20,10 +21,17 @@ namespace MiComunidad.Models
         {
         }
 
+        public void Detach(object entity)
+        {
+            var objectContext = ((IObjectContextAdapter)this).ObjectContext;
+            objectContext.Detach(entity);
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
         public System.Data.Entity.DbSet<MiComunidad.Models.Cliente> Clientes { get; set; }
+        public object Cliente { get; internal set; }
     }
 }

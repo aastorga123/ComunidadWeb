@@ -349,6 +349,14 @@ a.classImgDetalle
 
 }
 
+h1#technique-one {
+  background: url('../Images/detalle.png') no-repeat; 
+
+    height:31px;
+    width:31px;
+
+}
+
 a.classImgEditar
 {
     background: url('../Images/editar.png') no-repeat;

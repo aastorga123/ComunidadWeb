@@ -2,57 +2,78 @@
 
 @{
     ViewBag.Title = "Details";
+    
 }
 
-<h2>Detalle del Cliente</h2>
+<div class="">
+    <div class="modal-title" style="color: #3A87AD;">
+        <h2>Detalle del Cliente</h2>
+    </div>
+    <div>
 
-<div>
-    <h4></h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Rut)
-        </dt>
+        <hr />
+        @using (Html.BeginForm("AddNote", "Clientes",FormMethod.Post))
+        { 
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Rut)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Rut)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Rut)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Ubicacion)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Ubicacion)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Ubicacion)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Ubicacion)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Url)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Url)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Url)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Url)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
 
-    </dl>
+        </dl>
+        <div>
+            <button type="submit" id="btnSave" class="btn btn-primary" value="Save" />
+            <button type="button"  value="Cancelar" class="btn btn-sm" data-dismiss="modal" />
+        </div>
+        }
+    </div>
 </div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#bnSave').click(function () {
+            $('#modal-container').modal('hide');
+        });
+    });
+
+
+</script>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ClienteID }) |
-    @Html.ActionLink("Volver", "Index")
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.ClienteID }) |*@
+    @*@Html.ActionLink("Volver", "Index")*@
 </p>
