@@ -1,0 +1,191 @@
+﻿@model MiComunidad.ViewModels.UsuarioView
+@*@model IEnumerable<MiComunidad.ViewModels.UsuarioView>*@
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Agregar Usuario";
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+   $('.datos_usuario').on('click', enviaDatosUsuario);
+
+   function enviaDatosUsuario(event) {
+
+       var $this = $(this);
+
+        event.preventDefault();
+        rut = $this.attr('data-rut');
+        nombreusuario = $this.attr('data-nombreusuario');
+        email = $this.attr('data-email');
+        tipo = $this.attr('data-tipo');
+
+        document.getElementById('lblrut').innerHTML = rut;
+        document.getElementById('lblNombre').innerHTML = nombreusuario;
+        document.getElementById('lblEmail').innerHTML = email;
+        document.getElementById('lblTipo').innerHTML = tipo;
+        $('#miventanausuario').modal();
+    }
+    </script>
+}
+
+<hr />
+
+<div id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-primary">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h1 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+
+                    @ViewBag.Title
+                </a>
+            </h1>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel panel-collapse">
+                <div class="panel-body">
+
+                    @Html.Partial("Create")
+                    @*@Html.ActionLink("Create New", "Create")*@
+                </div>
+            </div>
+
+        </div>
+        @*<div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Agregar Rol Usuario</a>
+                </h4>
+            </div>
+            <div id="collapse2" class="panel-collapse collapse">
+                <div class="panel-body">
+                    @Html.Partial("RolCrear")
+                </div>
+            </div>
+        </div>*@
+    </div>
+</div>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.Cliente.Rut)
+        </th>
+        <th>
+            @Html.ActionLink("NombreUsuario", "Index", new { Sorting_Order = ViewBag.SortingNombreUsuario })
+            @*@Html.DisplayNameFor(model => model.Usuario.NombreUsuario)*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.EmailUsuario)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.PassUsuario)
+        </th>
+        <th colspan="3">
+            @Html.DisplayNameFor(model => model.Usuario.TipoUsuario)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Usuarios) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cliente.Rut)
+        </td>
+        <td>
+            
+           @Html.DisplayFor(modelItem => item.NombreUsuario)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmailUsuario)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PassUsuario)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoUsuario)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.UsuarioID }, new { @class = "classImgEditar", data_toggle = "tooltip", data_placement = "bottom", data_original_title = "Editar" })
+        </td>
+        <td>
+            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Detalle" data-rut='@item.Cliente.Rut' data-nombreusuario='@item.NombreUsuario' data-email='@item.EmailUsuario' data-tipo='@item.TipoUsuario' onclick="enviaDatosUsuario" class="datos_usuario"><input type="image" src="~/Images/detalle.png" /></a>
+            @* @Html.ActionLink("Details", "Details", new { id=item.UsuarioID })*@
+            <!-- Modal -->
+            <div class="modal fade" id="miventanausuario" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Detalle Usuario </h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Usuario.Cliente.Rut):
+                                </dt>
+
+                                <dd>
+                                    <label id="lblrut"></label>
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Usuario.NombreUsuario):
+                                </dt>
+
+                                <dd>
+                                    <label id="lblNombre"></label>
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Usuario.EmailUsuario):
+                                </dt>
+
+                                <dd>
+                                    <label id="lblEmail"></label>
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Usuario.TipoUsuario):
+                                </dt>
+
+                                <dd>
+                                    <label id="lblTipo"></label>
+                                </dd>
+
+
+                            </dl>
+
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" name="submitButton" value="Cancelar" class="btn btn-default" data-dismiss="modal" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id=item.UsuarioID }, new { @class = "classImgEliminar", data_toggle = "tooltip", data_placement = "bottom", data_original_title = "Eliminar", onclick = "return confirm('Estas seguro de eliminar este usuario: " + item.NombreUsuario + "?');" })
+        </td>
+    </tr>
+}
+
+</table>
+
+    @if (Model.PageCount > 1)
+    {
+<div class="pager">
+    @Html.PagedListPager(Model.PageUsuario, page => Url.Action("Index", new
+{
+    page,
+    Sorting_Order = ViewBag.currentSort,
+    q = ViewBag.currentSearch
+}))
+   
+</div>
+    }

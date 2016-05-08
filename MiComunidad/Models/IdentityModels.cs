@@ -21,7 +21,7 @@ namespace MiComunidad.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("MiComunidadContext", throwIfV1Schema: false)
         {
         }
 

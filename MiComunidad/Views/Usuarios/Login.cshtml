@@ -1,0 +1,83 @@
+﻿@model MiComunidad.Models.Login
+
+@{
+    Layout = null;
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title - Mi Comunidad</title>
+
+
+    <link href='@Url.Content("http://fonts.googleapis.com/css?family=Raleway:300,200")' rel='stylesheet' type='text/css'>
+
+    <link href="@Url.Content("~/Content/reset.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/style.css")" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/modernizr")
+
+
+</head>
+<body>
+
+    @using (Html.BeginForm("Login", "Usuarios", new { rut = Request["rut"] }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @*<button id="findpass">What's the password?</button>*@
+     
+        <div class="form">
+            <div class="forceColor"></div>
+            <div class="topbar">
+                <div class="spanColor"></div>
+                <img src='@ViewBag.Logo' class="logo"/>
+            </div>
+            <div class="topbar">
+                <div class="spanColor"></div>
+                <div class="label"> Use una cuenta para iniciar sesión.</div>
+            </div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="topbar">
+                <div class="spanColor"></div>
+
+                @Html.TextBoxFor(m => m.EmailUsuario, new { @class = "input", @placeholder = "email", @id = "password" })
+                @Html.ValidationMessageFor(m => m.EmailUsuario, "", new { @class = "label" })
+
+            </div>
+            <div class="topbar">
+                <div class="spanColor"></div>
+
+                @Html.PasswordFor(m => m.PassUsuario, new { @class = "input", @placeholder = "Password", @id = "password" })
+                @Html.ValidationMessageFor(m => m.PassUsuario, "", new { @class = "label" })
+
+            </div>
+            <div class="topbar">
+                <div class="spanColor"></div>
+                @if (Session["ErrorSesion"] != null)
+                {
+                    <div class="label">
+                        @Session["ErrorSesion"].ToString();
+                    </div>
+                }
+
+            </div>
+
+            <input type="submit" value="Iniciar sesión" class="submit" />
+            @*<button class="submit" id="submit">Login</button>*@
+        </div>
+
+    }
+    <script src='@Url.Content("http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js")'></script>
+    <script src="@Url.Content("~/Scripts/index.js")" type="text/javascript"></script>
+
+
+</body>
+</html>

@@ -14,9 +14,7 @@
 @Scripts.Render("~/bundles/jqueryval")
 
 <script>
-    $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
+
 
 
         //var varSession = $(this).data('id');
@@ -142,8 +140,8 @@
         <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel panel-collapse">
                 <div class="panel-body">
-                    @using (Html.BeginForm("AddCliente", "Clientes", new { id = Model.Cliente.ClienteID }))//"AddCliente", "Clientes"
-            {
+                    @using (Html.BeginForm("AddCliente", "Clientes", new { id = Model.Cliente.ClienteID },FormMethod.Post, new {enctype = "multipart/form-data" }))//"AddCliente", "Clientes"
+                    {
                         @Html.AntiForgeryToken()
 
                         <table class="table table-hover">
@@ -194,6 +192,19 @@
                                                 <div class="col-md-10">
                                                     @Html.EditorFor(model => model.Cliente.Email, new { htmlAttributes = new { @class = "form-control", @Placeholder = "Ej: ejemplo@ejemplo.cl" } })
                                                     @Html.ValidationMessageFor(model => model.Cliente.Email, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Cliente.Logo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @*<input type="file" name="file" value="Subir archivo..." />*@
+                                                    <a class='btn btn-primary' href='javascript:;'>
+                                                        Subir archivo...
+                                                        <input type="file" name="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' size="40" onchange='$("#upload-file-info").html($(this).val());'>
+                                                    </a>
+                                                    &nbsp;
+                                                    <span class='label label-info' id="upload-file-info">@ViewBag.Logo</span>
                                                 </div>
                                             </div>
                                             <hr />

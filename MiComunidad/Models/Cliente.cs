@@ -35,12 +35,12 @@ namespace MiComunidad.Models
         [DataType(DataType.EmailAddress)]
         [StringLength(50, ErrorMessage = "El campo {0} debe ser entre {1} and {2} caracteres", MinimumLength = 3)]
         public string Email { get; set; }
-        //[Display(Name = "Logo")]
-        //[Required(ErrorMessage = "Debe ingresar {0}")]
-        //[StringLength(100, ErrorMessage = "El campo {0} debe ser entre {1} and {2} caracteres", MinimumLength = 3)]
-        //public string Logo { get; set; }
+        [Display(Name = "Logo")]
+        public string Logo { get; set; }
         [NotMapped]
         public string Acciones { get { return Acciones; } }
+
+        public virtual ICollection<Usuario> Usuarios { get; set; }
 
     }
 }

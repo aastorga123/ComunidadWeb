@@ -27,8 +27,10 @@
     <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
       <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>*@
                     <li>@Html.ActionLink("Cliente", "AddCliente", "Clientes")</li>
+                    <li>@Html.ActionLink("Programa", "Index", "Programas")</li>
+                    <li>@Html.ActionLink("Usuario", "Index", "usuarios")</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
+               @* @Html.Partial("_LoginPartial")*@
             </div>
         </div>
     </div>
@@ -46,6 +48,14 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    
 
+    
+    <script>
+    $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+    });
+    </script>
+        
 </body>
 </html>

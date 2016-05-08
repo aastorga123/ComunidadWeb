@@ -9,6 +9,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
+using System.Web.UI;
 //
 namespace MiComunidad
 {
@@ -24,5 +25,15 @@ namespace MiComunidad
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
-    }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            //if (Request["rut"] == null)
+            //{
+            //   Response.Redirect("Login", true);
+            //}
+
+        }
+
+        }
 }

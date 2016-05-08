@@ -33,5 +33,15 @@ namespace MiComunidad.Models
         }
         public System.Data.Entity.DbSet<MiComunidad.Models.Cliente> Clientes { get; set; }
         public object Cliente { get; internal set; }
+
+        public System.Data.Entity.DbSet<MiComunidad.Models.Programa> Programas { get; set; }
+
+        public System.Data.Entity.DbSet<MiComunidad.Models.Usuario> Usuarios { get; set; }
+
+        public System.Data.Entity.DbSet<MiComunidad.Models.RolUsuario> RolUsuarios { get; set; }
+
+        public System.Data.Entity.DbSet<MiComunidad.Models.Login> logins { get; set; }
+
+        public System.Data.Entity.DbSet<MiComunidad.Models.UsuarioLogin> UsuarioLogins { get; set; }
     }
 }

@@ -5,6 +5,8 @@ using System.Web.Mvc;
 using MiComunidad.Models;
 using System.Collections.Generic;
 using PagedList;
+using System.Web;
+using System;
 
 namespace MiComunidad.Controllers
 {
@@ -63,8 +65,13 @@ namespace MiComunidad.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddCliente(Cliente cliente, int? id)
+        public ActionResult AddCliente(Cliente cliente, int? id, HttpPostedFileBase file)
         {
+            string NombreCarpeta = "Logo";
+            string logo = string.Empty;
+            string strCarpeta = "\\" + NombreCarpeta + "\\";
+            string carpetaBase = AppDomain.CurrentDomain.BaseDirectory + "\\Views\\Clientes\\";
+
             var ClienteView = new ViewModels.ClienteView();
             ClienteView.Cliente = cliente;
             ClienteView.Clientes = new List<Models.Cliente>();
@@ -76,40 +83,93 @@ namespace MiComunidad.Controllers
             if (ModelState.IsValid)
             {
                 //var rutExiste = ClienteView.Clientes.SingleOrDefault(c => c.Rut == rut);
+                //var g = db.Clientes.Where(c => c.Rut == rut).ToList();
                 Cliente BuscarclienteDB = db.Clientes.Find(id);
                 if (BuscarclienteDB != null)
                 {
-                    if (cliente.Rut == rut)
+                    if (BuscarclienteDB.Rut == rut)
                     {
-                        //Eliminar Registro
-                        ClienteView.Cliente = db.Clientes.Find(id);
-                        db.Clientes.Remove(ClienteView.Cliente);
-                        db.Entry(ClienteView.Cliente).State = EntityState.Deleted;
+                        BuscarclienteDB.Rut = cliente.Rut;
+                        BuscarclienteDB.Nombre = cliente.Nombre;
+                        BuscarclienteDB.Ubicacion = cliente.Ubicacion;
+                        BuscarclienteDB.Url = cliente.Url;
+                        //si el archivo es nuevo modifica
+                        if (file == null)
+                        {
+                            logo = BuscarclienteDB.Logo;
+                        }
+                        else
+                        {
+                            
+                            if (!System.IO.Directory.Exists(carpetaBase + strCarpeta))
+                            {
+                                //1.-primera ves crea carpeta
+                                System.IO.Directory.CreateDirectory(carpetaBase + strCarpeta);
+                                string subcarpeta = carpetaBase + strCarpeta + cliente.Rut;
+                                if (!System.IO.Directory.Exists(subcarpeta))
+                                {
+                                    //1.-primera ves crea subcarpeta
+                                    System.IO.Directory.CreateDirectory(subcarpeta);
+                                }
+                                logo = (DateTime.Now.ToString("yyyyMMdd") + "-" + file.FileName).ToLower();
+                                System.IO.File.Delete(Server.MapPath("~/Views/Clientes" + "/" + NombreCarpeta + "/" + cliente.Rut + "/" + BuscarclienteDB.Logo));
+                                file.SaveAs(Server.MapPath("~/Views/Clientes" + "/" + NombreCarpeta + "/" + cliente.Rut + "/" + logo));
+                            }
+                            else
+                            {
+                                string subcarpeta = carpetaBase + strCarpeta + cliente.Rut;
+                                if (!System.IO.Directory.Exists(subcarpeta))
+                                {
+                                    //1.-primera ves crea subcarpeta
+                                    System.IO.Directory.CreateDirectory(subcarpeta);
+                                }
+                                
+                                logo = (DateTime.Now.ToString("yyyyMMdd") + "-" + file.FileName).ToLower();
+                                System.IO.File.Delete(Server.MapPath("~/Views/Clientes" + "/" + NombreCarpeta + "/" + cliente.Rut + "/" + BuscarclienteDB.Logo));
+                                file.SaveAs(Server.MapPath("~/Views/Clientes" + "/" + NombreCarpeta + "/" + cliente.Rut + "/" + logo));
+                            }
+                            
+                        }
+                        BuscarclienteDB.Logo = logo;
+                        db.Entry(BuscarclienteDB).State = EntityState.Modified;
                         db.SaveChanges();
-                        //Volver a Crear Registro con los datos nuevos
-                        ClienteView.Cliente = cliente;
-                        db.Clientes.Add(ClienteView.Cliente);
-                        db.Entry(ClienteView.Cliente).State = EntityState.Added;
-                        db.SaveChanges();
-                        //Modificar registro
-                        ClienteView.Cliente = cliente;
-                        db.Entry(ClienteView.Cliente).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return RedirectToAction("AddCliente");
-                        //return View("AddCliente", ClienteView);
-                        
+                        return RedirectToAction("AddCliente");                    
 
                     }
                 }
                 else
                 {
                     ClienteView.Cliente = cliente;
+                   if (!System.IO.Directory.Exists(carpetaBase + strCarpeta))
+                    {
+                        //1.-primera ves crea carpeta
+                        System.IO.Directory.CreateDirectory(carpetaBase + strCarpeta);
+                        string subcarpeta = carpetaBase + strCarpeta + cliente.Rut;
+                        if (!System.IO.Directory.Exists(subcarpeta))
+                        {
+                            //1.-primera ves crea subcarpeta
+                            System.IO.Directory.CreateDirectory(subcarpeta);
+                        }
+                        logo = (DateTime.Now.ToString("yyyyMMdd") + "-" + file.FileName).ToLower();
+                        file.SaveAs(Server.MapPath("~/Views/Clientes" + "/" + NombreCarpeta + "/" + cliente.Rut + "/" + logo));
+                    }
+                    else
+                    {
+                        string subcarpeta = carpetaBase + strCarpeta + cliente.Rut;
+                        if (!System.IO.Directory.Exists(subcarpeta))
+                        {
+                            //1.-primera ves crea subcarpeta
+                            System.IO.Directory.CreateDirectory(subcarpeta);
+                        }
+                        logo = (DateTime.Now.ToString("yyyyMMdd") + "-" + file.FileName).ToLower();
+                        file.SaveAs(Server.MapPath("~/Views/Clientes" + "/" + NombreCarpeta + "/" + cliente.Rut +  "/" + logo));
+                    }
+
+                    ClienteView.Cliente.Logo = logo;
                     db.Clientes.Add(ClienteView.Cliente);
                     db.Entry(ClienteView.Cliente).State = EntityState.Added;
                     db.SaveChanges();
-                    Session["cliente"] = ClienteView.Cliente;
                     return RedirectToAction("AddCliente");
-                    //return View("AddCliente", ClienteView);
                 }
             }
 
@@ -316,6 +376,7 @@ namespace MiComunidad.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Logo = cliente.Logo;
             ClienteView.Cliente = cliente;
             return View("AddCliente", ClienteView);
         }
@@ -352,9 +413,9 @@ namespace MiComunidad.Controllers
                         cliente.ClienteID = (int)id;
                         db.Entry(cliente).State = EntityState.Added;
                         db.SaveChanges();
-                        db.Entry(cliente).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return RedirectToAction("AddCliente");
+                        
+
+
                     }
                 }
                else

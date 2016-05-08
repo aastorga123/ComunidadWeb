@@ -215,12 +215,22 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\EnviarCorreoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProgramasController.cs" />
+    <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\keyAttribute.cs" />
+    <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\Programa.cs" />
+    <Compile Include="Models\RolUsuario.cs" />
+    <Compile Include="Models\TipoUsuario.cs" />
+    <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\UsuarioLogin.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -230,6 +240,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ClienteView.cs" />
+    <Compile Include="ViewModels\ProgramaView.cs" />
+    <Compile Include="ViewModels\UsuarioView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -237,6 +249,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\reset.css" />
+    <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -257,6 +271,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="Properties\PublishProfiles\MiComunidad.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -273,7 +288,17 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Content\form-elements.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Scripts\jquery-1.11.1.min.js" />
+    <Content Include="Scripts\jquery.backstretch.min.js" />
+    <Content Include="Scripts\placeholder.js" />
+    <Content Include="Scripts\scripts.js" />
+    <Content Include="Scripts\index.js" />
+    <Content Include="Views\Usuarios\MailTemplateRegistrado.html" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -313,9 +338,23 @@
     <Content Include="Views\Clientes\Edit.cshtml" />
     <Content Include="Views\Clientes\Index.cshtml" />
     <Content Include="Views\Clientes\AddCliente.cshtml" />
+    <Content Include="Views\Programas\Create.cshtml" />
+    <Content Include="Views\Programas\Delete.cshtml" />
+    <Content Include="Views\Programas\Details.cshtml" />
+    <Content Include="Views\Programas\Edit.cshtml" />
+    <Content Include="Views\Programas\Index.cshtml" />
+    <Content Include="Views\Usuarios\Create.cshtml" />
+    <Content Include="Views\Usuarios\Delete.cshtml" />
+    <Content Include="Views\Usuarios\Details.cshtml" />
+    <Content Include="Views\Usuarios\Edit.cshtml" />
+    <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Usuarios\RolCrear.cshtml" />
+    <Content Include="Views\Usuarios\Login.cshtml" />
+    <Content Include="Views\Usuarios\Inicio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\EnviarCorreo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

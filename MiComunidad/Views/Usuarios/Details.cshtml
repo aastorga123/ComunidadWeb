@@ -1,0 +1,58 @@
+﻿@model MiComunidad.Models.Usuario
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Usuario</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Cliente.Rut)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cliente.Rut)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreUsuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreUsuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailUsuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmailUsuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PassUsuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PassUsuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoUsuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoUsuario)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.UsuarioID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
