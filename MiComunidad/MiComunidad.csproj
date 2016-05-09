@@ -255,6 +255,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\cerrar.JPG" />
     <Content Include="Images\detalle.png" />
     <Content Include="Images\editar.png" />
     <Content Include="Images\eliminar.gif" />
@@ -351,10 +352,12 @@
     <Content Include="Views\Usuarios\RolCrear.cshtml" />
     <Content Include="Views\Usuarios\Login.cshtml" />
     <Content Include="Views\Usuarios\Inicio.cshtml" />
+    <Content Include="Views\Usuarios\Logo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\EnviarCorreo\" />
+    <Folder Include="Views\ValidarSesion\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

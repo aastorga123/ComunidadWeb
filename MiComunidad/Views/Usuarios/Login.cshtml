@@ -61,13 +61,7 @@
             </div>
             <div class="topbar">
                 <div class="spanColor"></div>
-                @if (Session["ErrorSesion"] != null)
-                {
-                    <div class="label">
-                        @Session["ErrorSesion"].ToString();
-                    </div>
-                }
-
+                <div class="label">@ViewBag.Error</div>
             </div>
 
             <input type="submit" value="Iniciar sesión" class="submit" />

@@ -20,6 +20,17 @@ namespace MiComunidad.Controllers
         // GET: Usuarios
         public ActionResult Index(string Sorting_Order, string q, int page = 1, int pageSize = 3)
         {
+           
+            if (Session["Login"] == null)
+            {
+                if (Session["rut"] != null)
+                {
+                    string rut = Session["rut"] as string;
+                    return RedirectToAction("Login", "Usuarios", new {rut=rut });
+                }
+                return RedirectToAction("Login", "Usuarios");
+            }
+
             var UsuarioView = new ViewModels.UsuarioView();
             UsuarioView.Usuario = new Models.Usuario();
             UsuarioView.Usuarios = new List<Models.Usuario>();
@@ -97,7 +108,7 @@ namespace MiComunidad.Controllers
             UsuarioView.Usuarios = usuarios.ToList();
 
             var customerID = int.Parse(Request["ClienteID"]);
-
+            string rut = Request["rut"].ToString();
             var list = db.Clientes.ToList();
             list.Add(new Cliente { ClienteID = 0, Nombre = "[Seleccione un cliente...]" });
             list = list.OrderBy(c => c.Nombre).ToList();
@@ -121,12 +132,11 @@ namespace MiComunidad.Controllers
             UsuarioView.Usuarios = usuarios.ToList();
             Login login = new Models.Login();
             UsuarioLogin usuariologin = new UsuarioLogin();
-
+            //string rut = Request["rut"].ToString();
             //var usuarioView = Session["UsuarioView"] as ViewModels.UsuarioView;
             int customerID = int.Parse(Request["ClienteID"]);
             UsuarioView.Usuario.ClienteID = customerID;
             usuario.ClienteID = customerID;
-
 
 
             if (ModelState.IsValid)
@@ -191,6 +201,7 @@ namespace MiComunidad.Controllers
                 db.SaveChanges();
 
                 FormatearCorreo(usuario);
+                
                 return RedirectToAction("Index");
             }
 
@@ -320,7 +331,7 @@ namespace MiComunidad.Controllers
                     db.SaveChanges();
                 }
             }
-                return RedirectToAction("Index");
+            return RedirectToAction("Index");
 
         }
 
@@ -347,14 +358,22 @@ namespace MiComunidad.Controllers
 
         public void ImagenLogo(string rut)
         {
-            Cliente cliente = db.Clientes.FirstOrDefault(c => c.Rut == rut);
-            if (cliente != null)
+            if (!string.IsNullOrEmpty(rut))
             {
-                string path = Server.MapPath("~/Views/Clientes/Logo/" + rut + "/" + cliente.Logo);
-                byte[] imageByteData = System.IO.File.ReadAllBytes(path);
-                string imageBase64Data = Convert.ToBase64String(imageByteData);
-                string imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
-                ViewBag.Logo = imageDataURL;
+                
+                Cliente cliente = db.Clientes.FirstOrDefault(c => c.Rut == rut);
+                if (cliente != null)
+                {
+                    string path = Server.MapPath("~/Views/Clientes/Logo/" + rut + "/" + cliente.Logo);
+                    byte[] imageByteData = System.IO.File.ReadAllBytes(path);
+                    string imageBase64Data = Convert.ToBase64String(imageByteData);
+                    string imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+                    ViewBag.Logo = imageDataURL;
+                }
+            }
+            else
+            {
+                ViewBag.Logo = "";
             }
         }
         public  ActionResult Login()
@@ -366,6 +385,7 @@ namespace MiComunidad.Controllers
             if(Request["rut"]!=null)
             {
                 string rut = Request["rut"].ToString();
+                Session["rut"] = rut;
                 ImagenLogo(rut);
             }
             
@@ -385,31 +405,99 @@ namespace MiComunidad.Controllers
             }
             else
             {
-                
+
                 Login validaLogin = db.logins.FirstOrDefault(u => u.EmailUsuario == Login.EmailUsuario && u.PassUsuario == Login.PassUsuario);
                 if (validaLogin != null)
                 {
                     if (validaLogin.EmailUsuario == Login.EmailUsuario && validaLogin.PassUsuario == Login.PassUsuario)
                     {
-                        return RedirectToAction("Inicio");
+                        if (string.IsNullOrEmpty(rut))
+                        {
+                            Usuario buscarusuarioBD = db.Usuarios.FirstOrDefault(u => u.EmailUsuario == Login.EmailUsuario && u.PassUsuario == Login.PassUsuario);
+                            if (buscarusuarioBD != null)
+                            {
+                                Cliente buscarclienteBD = db.Clientes.Find(buscarusuarioBD.ClienteID);
+                                if (buscarclienteBD != null)
+                                {
+                                    rut = buscarclienteBD.Rut;
+                                }
+                                
+                            }
+                           
+                        }
+                        Session["rut"] = rut;
+                        Session["Login"] = validaLogin;
+                        return RedirectToAction("Inicio", "Usuarios");
                     }
 
                 }
                 else
                 {
-                    Session["ErrorSesion"] = "Su correo y/o nombre de usuario son inválidos";
-                    //ViewBag.Error = "Su correo y/o nombre de usuario son inválidos";
+                    Session["rut"] = null;
+                    Session["Login"] = null;
+                    ViewBag.Error = "Su correo y/o nombre de usuario son inválidos";
                 }
 
 
                 //return RedirectToAction("~/Views/Shared/_Layout.cshtml");
             }
-            return RedirectToAction("Login","Usuarios",new { rut=rut });
+            return RedirectToAction("Login","Usuarios");
         }
         public ActionResult Inicio()
         {
-            return View();
+            if (Session["rut"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                if (Session["Login"]!=null)
+                {
+                    return View();
+                }
+                return RedirectToAction("Login", "Usuarios");
+            }
 
+        }
+
+        public ActionResult Logo()
+        {
+            if (Session["rut"] != null)
+            {
+                string rut = Session["rut"] as string;
+                if (!string.IsNullOrEmpty(rut))
+                {
+                    ImagenLogo(rut);
+                    return PartialView();
+                }
+            }
+            if (Session["Login"] != null)
+            {
+                ImagenLogo(null);
+                return PartialView();
+            }
+            return RedirectToAction("Login", "Usuarios");
+            
+            
+        }
+
+        public ActionResult CerrarSesion()
+        {
+            Session["Login"] = null;
+
+            if (Session["Login"] == null)
+            {
+                if (Session["rut"] != null)
+                {
+                    string rut = Session["rut"] as string;
+                    return RedirectToAction("Login", "Usuarios", new { rut = rut });
+                }
+                return RedirectToAction("Login", "Usuarios");
+            }
+
+            Session["rut"] = null;
+            
+            return RedirectToAction("Login", "Usuarios");
         }
 
 

@@ -42,6 +42,7 @@ video {
   display: inline-block;
 }
 
+
 audio:not([controls]) {
   display: none;
   height: 0;
@@ -375,6 +376,16 @@ a.classImgEliminar
     width:31px;
 }
 
+a.classImgCerrarSesion
+{
+    background: url('../Images/cerrar.JPG') no-repeat;
+    text-indent: -9999px;
+    height:31px;
+    width:31px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
 a:hover,
 a:focus {
   color: #2a6496;
@@ -385,6 +396,17 @@ a:focus {
   outline: thin dotted #333;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
+}
+
+.logo {
+  display: block;
+  width: 130px;
+  height: 70px;
+  position: relative;
+  background: transparent;
+  margin-bottom: 0px;
+  padding: 5px 5px;
+  border-radius: 20px;
 }
 
 img {
@@ -4316,7 +4338,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
     float: left;
   }
   .navbar-nav > li > a {
-    padding-top: 15px;
+    padding-top: 30px;
     padding-bottom: 15px;
   }
 }

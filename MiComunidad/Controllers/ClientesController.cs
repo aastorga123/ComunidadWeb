@@ -18,7 +18,16 @@ namespace MiComunidad.Controllers
 
         public ActionResult AddCliente(string Sorting_Order, string q, int page = 1, int pageSize = 3)
         {
-      
+            if (Session["Login"] == null)
+            {
+                if (Session["rut"] != null)
+                {
+                    string rut = Session["rut"] as string;
+                    return RedirectToAction("Login", "Usuarios", new { rut = rut });
+                }
+                return RedirectToAction("Login", "Usuarios");
+            } 
+
             var ClienteView = new ViewModels.ClienteView();
             ClienteView.Clientes = new List<Models.Cliente>();
             ClienteView.Cliente = new Models.Cliente();

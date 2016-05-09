@@ -326,7 +326,7 @@
                         </td>
                         <td>
 
-                            @Html.ActionLink("Editar", "Edit", new { id = item.ClienteID }, new { @class = "classImgEditar", data_toggle = "tooltip", data_placement = "bottom", data_original_title = "Editar" })
+                            @Html.ActionLink("Editar", "Edit", new { id = item.ClienteID, rut = Request["rut"] }, new { @class = "classImgEditar", data_toggle = "tooltip", data_placement = "bottom", data_original_title = "Editar" })
                         </td>
                         <td>
                            <div data-toggle="modal" data-target="#miventana">
