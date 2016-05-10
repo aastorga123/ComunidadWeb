@@ -18,6 +18,8 @@ namespace MiComunidad.Models
         [DataType(DataType.MultilineText)]
         [StringLength(200, ErrorMessage = "El campo {0} debe ser entre {1} and {2} caracteres", MinimumLength = 0)]
         public string DescripcionPrograma { get; set; }
+        [Display(Name = "Estado")]
+        public EstadoPrograma EstadoPrograma { get; set; }
 
     }
 }

@@ -35,6 +35,27 @@
                         </div>
 
                         <div class="form-group">
+                               
+                                @Html.LabelFor(model => model.Programa.EstadoPrograma, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EnumDropDownListFor(model => model.Programa.EstadoPrograma, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Programa.EstadoPrograma, "", new { @class = "text-danger" })
+                                    <div>
+
+                                        @*@foreach (var estado in Enum.GetValues(typeof(MiComunidad.Models.EstadoPrograma)))
+                                        {
+                                            var id = TagBuilder.CreateSanitizedId(string.Format("{0}_{1}", "rdbtn", typeof(MiComunidad.Models.EstadoPrograma), estado));
+                                            <div>
+                                                @Html.RadioButtonFor(model => model.Programa.EstadoPrograma, estado, new { id, @checked = "checked" })
+                                                @Html.Label(estado.ToString(), new { @for = id })
+                                            </div>
+                                        }*@
+
+                                    </div>
+                                </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
                                 <input type="submit" value="Grabar" class="btn btn-primary" />
                             </div>

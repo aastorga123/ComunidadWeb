@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MiComunidad.Models;
 using PagedList;
+using System;
 
 namespace MiComunidad.Controllers
 {
@@ -18,6 +17,16 @@ namespace MiComunidad.Controllers
         // GET: Programas
         public ActionResult Index(string Sorting_Order, string q, int page = 1, int pageSize = 3)
         {
+            if (Session["Login"] == null)
+            {
+                if (Session["rut"] != null)
+                {
+                    string rut = Session["rut"] as string;
+                    return RedirectToAction("Login", "Usuarios", new { rut = rut });
+                }
+                return RedirectToAction("Login", "Usuarios");
+            }
+
             var Programaview = new ViewModels.ProgramaView();
             Programaview.Programa = new Models.Programa();
             Programaview.Programas = new List<Models.Programa>();
@@ -37,6 +46,10 @@ namespace MiComunidad.Controllers
                     programas = programas.OrderBy(p => p.NombrePrograma);
                     break;
             }
+
+
+
+           // ViewBag.Estado = Programaview.Programa.EstadoPrograma;
 
             Programaview.PageNumber = page;
             Programaview.PageCount = pageSize;
@@ -71,6 +84,9 @@ namespace MiComunidad.Controllers
             Programaview.Programas = new List<Models.Programa>();
             Programaview.Programas = db.Programas.ToList();
 
+            var list = Programaview.Programas;
+            ViewBag.Estado = new SelectList(list, "ProgramaID", "EstadoPrograma");
+            // ViewBag.ClienteID = new SelectList(db.Clientes, "ClienteID", "Rut", usuario.ClienteID);
             return View(Programaview);
         }
 
@@ -79,7 +95,7 @@ namespace MiComunidad.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int? id,[Bind(Include = "ProgramaID,NombrePrograma,DescripcionPrograma")] Programa programa)
+        public ActionResult Create(int? id, Programa programa)
         {
             var Programaview = new ViewModels.ProgramaView();
             Programaview.Programa = programa;
@@ -93,15 +109,11 @@ namespace MiComunidad.Controllers
                 {
                     if (BuscarProgramaDB.NombrePrograma == programa.NombrePrograma)
                     {
-                        db.Programas.Remove(BuscarProgramaDB);
-                        db.Entry(BuscarProgramaDB).State = EntityState.Deleted;
-                        db.SaveChanges();
+                        BuscarProgramaDB.NombrePrograma = programa.NombrePrograma;
+                        BuscarProgramaDB.DescripcionPrograma = programa.DescripcionPrograma;
+                        BuscarProgramaDB.EstadoPrograma = programa.EstadoPrograma;
 
-                        db.Programas.Add(Programaview.Programa);
-                        db.Entry(Programaview.Programa).State = EntityState.Added;
-                        db.SaveChanges();
-
-                        db.Entry(Programaview.Programa).State = EntityState.Modified;
+                        db.Entry(BuscarProgramaDB).State = EntityState.Modified;
                         db.SaveChanges();
                         return RedirectToAction("Index");
                     }
@@ -118,7 +130,7 @@ namespace MiComunidad.Controllers
                 return View("Index", Programaview);
             }
 
-            return RedirectToAction("Index"); //View(Programaview);
+            //return RedirectToAction("Index"); //View(Programaview);
         }
 
         // GET: Programas/Edit/5
@@ -212,6 +224,21 @@ namespace MiComunidad.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public ActionResult Menu()
+        {
+            var Programaview = new ViewModels.ProgramaView();
+            Programaview.Programa = new Models.Programa();
+            Programaview.Programas = new List<Models.Programa>();
+
+            var list = db.Programas.Where(p => p.EstadoPrograma == EstadoPrograma.Habilitado).OrderBy(p => p.NombrePrograma);
+            Programaview.Programas = list.ToList();
+            //ViewBag.menu = Programaview.Programas;
+
+            return PartialView(Programaview);
+        }
+
+    
 
         protected override void Dispose(bool disposing)
         {

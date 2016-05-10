@@ -16,7 +16,7 @@ namespace MiComunidad.Controllers
 
         // GET: Clientes
 
-        public ActionResult AddCliente(string Sorting_Order, string q, int page = 1, int pageSize = 3)
+        public ActionResult Index(string Sorting_Order, string q, int page = 1, int pageSize = 3)
         {
             if (Session["Login"] == null)
             {
@@ -74,7 +74,7 @@ namespace MiComunidad.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddCliente(Cliente cliente, int? id, HttpPostedFileBase file)
+        public ActionResult Index(Cliente cliente, int? id, HttpPostedFileBase file)
         {
             string NombreCarpeta = "Logo";
             string logo = string.Empty;
@@ -142,7 +142,7 @@ namespace MiComunidad.Controllers
                         BuscarclienteDB.Logo = logo;
                         db.Entry(BuscarclienteDB).State = EntityState.Modified;
                         db.SaveChanges();
-                        return RedirectToAction("AddCliente");                    
+                        return RedirectToAction("Index");                    
 
                     }
                 }
@@ -178,7 +178,7 @@ namespace MiComunidad.Controllers
                     db.Clientes.Add(ClienteView.Cliente);
                     db.Entry(ClienteView.Cliente).State = EntityState.Added;
                     db.SaveChanges();
-                    return RedirectToAction("AddCliente");
+                    return RedirectToAction("Index");
                 }
             }
 
@@ -206,14 +206,14 @@ namespace MiComunidad.Controllers
 
         private ActionResult Cancelar()
         {
-            return RedirectToAction("AddCliente");
+            return RedirectToAction("Index");
 
             //var ClienteView = new ViewModels.ClienteView();
             //ClienteView.Cliente = new Models.Cliente();
             //ClienteView.Clientes = new List<Models.Cliente>();
             //ClienteView.Clientes = db.Clientes.ToList();
 
-            //return (View("AddCliente", ClienteView));
+            //return (View("Index", ClienteView));
         }
 
         private ActionResult Eliminar(int? id)
@@ -223,31 +223,12 @@ namespace MiComunidad.Controllers
             ClienteView.Clientes = new List<Models.Cliente>();
             ClienteView.Clientes = db.Clientes.ToList();
 
-            return View("AddCliente", ClienteView);
+            return View("Index", ClienteView);
 
-            //if (id != null)
-            //{
-            //    Cliente cliente = db.Clientes.Find(id);
-            //    if (cliente != null)
-            //    {
-            //        db.Clientes.Remove(cliente);
-            //        db.SaveChanges();
-            //        return RedirectToAction("AddCliente");
-
-            //    }
-            //    else { return HttpNotFound(); }
-            //}
-            //else
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
+        
         }
 
-        //public ActionResult Index()
-        //{
-        //    return View(db.Clientes.ToList());
-        //}
-
+     
         // GET: Clientes/Details/5
         public ActionResult Details(int? id, string Sorting_Order, string q, int page = 1, int pageSize = 3)
         {
@@ -294,11 +275,11 @@ namespace MiComunidad.Controllers
             }
             if (id == null)
             {
-                //return View("AddCliente", ClienteView);
+                //return View("Index", ClienteView);
                 //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ClienteView.Cliente = cliente;
-            //return View("AddCliente", ClienteView);
+            //return View("Index", ClienteView);
             //return View(ClienteView.Cliente);
 
             return AddNote("Details", ClienteView.Cliente);
@@ -312,7 +293,7 @@ namespace MiComunidad.Controllers
         [HttpPost]
         public ActionResult AddNote(Cliente cliente)
         {
-            return RedirectToAction("AddCliente");
+            return RedirectToAction("Index");
         }
 
         // GET: Clientes/Create
@@ -387,7 +368,7 @@ namespace MiComunidad.Controllers
             }
             ViewBag.Logo = cliente.Logo;
             ClienteView.Cliente = cliente;
-            return View("AddCliente", ClienteView);
+            return View("Index", ClienteView);
         }
 
         // POST: Clientes/Edit/5
@@ -429,10 +410,10 @@ namespace MiComunidad.Controllers
                 }
                else
                 {
-                    return RedirectToAction("AddCliente");
+                    return RedirectToAction("Index");
                 }
             }
-            return View("AddCliente", ClienteView);
+            return View("Index", ClienteView);
             //return View(ClienteView);
         }
 
@@ -457,23 +438,11 @@ namespace MiComunidad.Controllers
             db.Clientes.Remove(ClienteView.Cliente);
             db.Entry(ClienteView.Cliente).State = EntityState.Deleted;
             db.SaveChanges();
-            return RedirectToAction("AddCliente");
-            //return View("AddCliente", ClienteView);
+            return RedirectToAction("Index");
+            //return View("Index", ClienteView);
         }
 
-       /* public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Cliente cliente = db.Clientes.Find(id);
-            if (cliente == null)
-            {
-                return HttpNotFound();
-            }
-            return View("", cliente);
-        }*/
+      
 
         // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]

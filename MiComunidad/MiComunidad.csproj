@@ -224,6 +224,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\EstadoPrograma.cs" />
     <Compile Include="Models\keyAttribute.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Programa.cs" />
@@ -338,7 +339,6 @@
     <Content Include="Views\Clientes\Details.cshtml" />
     <Content Include="Views\Clientes\Edit.cshtml" />
     <Content Include="Views\Clientes\Index.cshtml" />
-    <Content Include="Views\Clientes\AddCliente.cshtml" />
     <Content Include="Views\Programas\Create.cshtml" />
     <Content Include="Views\Programas\Delete.cshtml" />
     <Content Include="Views\Programas\Details.cshtml" />
@@ -353,6 +353,7 @@
     <Content Include="Views\Usuarios\Login.cshtml" />
     <Content Include="Views\Usuarios\Inicio.cshtml" />
     <Content Include="Views\Usuarios\Logo.cshtml" />
+    <Content Include="Views\Programas\Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

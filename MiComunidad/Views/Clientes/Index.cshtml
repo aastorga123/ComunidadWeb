@@ -1,66 +1,457 @@
-﻿@model IEnumerable<MiComunidad.Models.Cliente>   
+﻿@model MiComunidad.ViewModels.ClienteView
+@*@model PagedList.IPagedList<MiComunidad.Models.Cliente>*@
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Agregar Cliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Administrar Clientes</h2>
+<hr />
 
-<p>
-    @Html.ActionLink("Crear Nuevo Cliente", "Create")
-</p>
+@section Scripts {
+@Scripts.Render("~/bundles/jqueryval")
+
+<script>
 
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Rut)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Ubicacion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Url)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Rut)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ubicacion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Url)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
+        //var varSession = $(this).data('id');
+    //document.getElementById('lblRut').innerHTML = rut;
+        // $('#miventana').modal();
 
-            @Html.ActionLink("Editar", "Edit", new { id = item.ClienteID }, new { @class = "classImgEditar", @title="Editar" }) 
-        </td>
-        <td>
-            @Html.ActionLink("Detalle", "Details", new { id = item.ClienteID }, new { @class = "classImgDetalle", @title = "Detalle" }) 
 
-        </td>
-        <td>
-            @Html.ActionLink("Eliminar", "Delete", new { id = item.ClienteID }, new { @class = "classImgEliminar", @title = "Eliminar" })
+    //alert($(this).data('id'))
 
-        </td>
-</tr>
+    //$(document).ready(function(){
+    //    $("#hide").click(function(){
+    //        $("#element").hide();
+    //    });
+    //    $("#show").click(function(){
+    //        $("#element").show();
+    //    });
+    //});
+
+    //$(function () {
+    //    $("body").on('click', '.btn btn-info btn-lg', function (e) {
+    //        e.preventDefault();
+    //        $(this).attr('data-target','#modal-container');
+    //        $(this).attr('data-toogle','modal');
+    //    })
+
+    //    $('body').on('click','.modal-close-btn', function(){
+    //    $('#modal-container').modal('hide');
+    //    });
+
+    //    $('#modal-container').on('hidden.bs.modal', function(){
+    //    $(this).removeData('bs.modal');
+    //    });
+    //});
+
+    $(document).ready(function () {
+
+        // Match to Bootstraps data-toggle for the modal
+        // and attach an onclick event handler
+        $('a[data-toggle="modal"]').on('click', function (e) {
+
+            // From the clicked element, get the data-target arrtibute
+            // which BS3 uses to determine the target modal
+            var target_modal = $(e.currentTarget).data('target');
+            // also get the remote content's URL
+            var remote_content = e.currentTarget.href;
+
+            // Find the target modal in the DOM
+            var modal = $(target_modal);
+            // Find the modal's <div class="modal-body"> so we can populate it
+            var modalBody = $(target_modal + ' .modal-body');
+
+            // Capture BS3's show.bs.modal which is fires
+            // immediately when, you guessed it, the show instance method
+            // for the modal is called
+            modal.on('show.bs.modal', function () {
+                // use your remote content URL to load the modal body
+                modalBody.load(remote_content);
+            }).modal();
+            // and show the modal
+
+            // Now return a false (negating the link action) to prevent Bootstrap's JS 3.1.1
+            // from throwing a 'preventDefault' error due to us overriding the anchor usage.
+            return false;
+        });
+    });
+
+</script>
+<script>
+    //function d(rut) {
+    //    alert(rut);
+    //    document.getElementById('lblRut').innerHTML = rut;
+    //    //document.getElementById('lblNombre').innerHTML = nombrec;
+    //    //$('#miventana').modal();
+    //    //var url = "/home/delete/";
+    //    //$.post(url, { id: id })
+    //    // .done(function (response) {
+    //    //     $("#listOfCustomers").html(response);
+    //    // });
+
+    //}
+
+    $('.datos_edit').on('click', enviaDatosEdit);
+
+    function enviaDatosEdit(event) {
+        //  this aqui es el contexto que le da jquery al invocar al click, osea this es el elemento 'a'
+        var $this = $(this);
+        //  tambien si te complican los contextos,
+        //  te serviria  usa var $this=$(event.target); target aqui es el elemnto que 
+        //  invoco al evento 
+        // introducir el código aquí
+        event.preventDefault();
+        ID = $this.attr('data-id');
+        nombre = $this.attr('data-nombre');
+        rut = $this.attr('data-rut');
+        ubicacion = $this.attr('data-ubicacion');
+        url = $this.attr('data-url');
+        email = $this.attr('data-email');
+        //alert('Nombre: ' + Nombre + ', IDCliente' + ID);
+        document.getElementById('lblRut').innerHTML = rut;
+        document.getElementById('lblNombre').innerHTML = nombre;
+        document.getElementById('lblUbicacion').innerHTML = ubicacion;
+        document.getElementById('lblUrl').innerHTML = url;
+        document.getElementById('lblEmail').innerHTML = email;
+        $('#miventana').modal();
+    }
+</script>
 }
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
 
-</table>
+
+    
+
+<div id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-primary">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h1 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    
+                    Agregar Cliente
+                </a>
+            </h1>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel panel-collapse">
+                <div class="panel-body">
+                    @using (Html.BeginForm("Index", "Clientes", new { id = Model.Cliente.ClienteID },FormMethod.Post, new {enctype = "multipart/form-data" }))//"Index", "Clientes"
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <div class="form-horizontal">
+                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Cliente.Rut, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.Cliente.Rut, new { htmlAttributes = new { @class = "form-control", @Placeholder = "Ej: 13657654-K" } })
+                                                    @Html.ValidationMessageFor(model => model.Cliente.Rut, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Cliente.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.Cliente.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Cliente.Nombre, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Cliente.Ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.Cliente.Ubicacion, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Cliente.Ubicacion, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="form-horizontal">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Cliente.Url, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.Cliente.Url, new { htmlAttributes = new { @class = "form-control", @Placeholder = "Ej: https://..." } })
+                                                    @Html.ValidationMessageFor(model => model.Cliente.Url, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Cliente.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.Cliente.Email, new { htmlAttributes = new { @class = "form-control", @Placeholder = "Ej: ejemplo@ejemplo.cl" } })
+                                                    @Html.ValidationMessageFor(model => model.Cliente.Email, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Cliente.Logo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @*<input type="file" name="file" value="Subir archivo..." />*@
+                                                    <a class='btn btn-primary' href='javascript:;'>
+                                                        Subir archivo...
+                                                        <input type="file" name="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' size="40" onchange='$("#upload-file-info").html($(this).val());'>
+                                                    </a>
+                                                    &nbsp;
+                                                    <span class='label label-info' id="upload-file-info">@ViewBag.Logo</span>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" data-id="@Model.Cliente.ClienteID" value="Grabar" class="btn btn-primary" />
+
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+                            <!-- Modal Dialog Container -->
+@*<div id="modal-container" class="modal-fade" tabindex="-1" role="dialog" style="border: 5px solid #3A87AD">
+    <a href="#close" title="Close" class="modal-close-btn">X</a>
+    <div class="modal-content" style="width: 500px !important; margin: 10px auto !important;">
+        <div class="modal-body">
+        </div>
+    </div>
+</div>*@
+
+<div id="terms" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 id="termsLabel" class="modal-title">Detalle del Cliente</h3>
+            </div>
+            <div class="modal-body">
+               @*<table>
+            @foreach (var row in Model.Clientes.Where(c => c.ClienteID == item.ClienteID))
+        {
+            <tr>
+
+                <th>@row.Rut</th>
+                <th>@row.Nombre</th>
+                <th>@row.Email</th>
+            </tr>
+
+        }
+    </table>*@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+    @using (Html.BeginForm("Index", "Clientes"))
+    {
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><h2><small>Lista de Clientes</small></h2></div>
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        @Html.ActionLink("Rut", "Index", new { Sorting_Order = ViewBag.SortingRut })
+                        @* @Html.DisplayNameFor(model => model.Cliente.Rut)*@
+                    </th>
+                    <th>
+                        @Html.ActionLink("Nombre", "Index", new { Sorting_Order = ViewBag.SortingNombre })
+                        @*@Html.DisplayNameFor(model => model.Cliente.Nombre)*@
+                    </th>
+                    <th>
+                        @Html.ActionLink("Ubicacion", "Index", new { Sorting_Order = ViewBag.SortingUbicacion })
+                        @*@Html.DisplayNameFor(model => model.Cliente.Ubicacion)*@
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cliente.Url)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cliente.Email)
+                    </th>
+                    <th colspan="2">
+                        @Html.DisplayNameFor(model => model.Cliente.Acciones)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model.Clientes)
+                {
+                    @*@Html.HiddenFor(c => c.Cliente.ClienteID, new { @class="myHidden" })*@
+                    @*<tr>
+                        <div id="element" style="display: none;">
+                            <div id="close"><a href="#" id="hide">cerrar</a></div>
+                            Este es un div ocultar
+                        </div>
+                    </tr>*@
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rut)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ubicacion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Url)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+
+                            @Html.ActionLink("Editar", "Edit", new { id = item.ClienteID, rut = Request["rut"] }, new { @class = "classImgEditar", data_toggle = "tooltip", data_placement = "bottom", data_original_title = "Editar" })
+                        </td>
+                        <td>
+                           <div data-toggle="modal" data-target="#miventana">
+                                
+                                @*<a data-ClienteID="@item.ClienteID" class="classImgDetalle" data-toggle="tooltip" data-placement="bottom" title="Detalle">Detalle</a>*@
+                                @*<a id="linkDetalle" data-id="@item.ClienteID" name="linkDetalle" class="classImgDetalle" onclick="d(@item.Rut)">Detalle</a>*@
+                                @*@Html.ActionLink("Detalle","Details", new { id = item.ClienteID }, new { @class = "img", data_toggle = "tooltip", data_placement = "bottom", data_original_title = "Detalle" }) datos_edit*@
+                            </div>
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Detalle" data-id='@item.ClienteID' data-nombre='@item.Nombre' data-rut='@item.Rut' data-ubicacion='@item.Ubicacion' data-email='@item.Email' data-url='@item.Url' class="datos_edit"><input type="image" src="~/Images/detalle.png" /></a>
+                            
+                           @*@Html.ActionLink("detalle", "Details", "Clientes", new { id = item.ClienteID }, new { @class = "btn btn-info btn-lg", @id="modallink", title = "Add Note" })*@
+                            @*<a data-toggle="modal" href="terms.html" data-target="#terms">Terms of Use</a>*@
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="miventana" role="dialog">
+                                            <div class="modal-dialog modal-sm">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Detalle Cliente </h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    
+                                                        <dl class="dl-horizontal">
+                                                            <dt>
+                                                                @Html.DisplayNameFor(model => model.Cliente.Rut):
+                                                            </dt>
+
+                                                            <dd>
+                                                                <label id="lblRut"></label>
+                                                            </dd>
+
+                                                            <dt>
+                                                                @Html.DisplayNameFor(model => model.Cliente.Nombre):
+                                                            </dt>
+
+                                                            <dd>
+                                                                <label id="lblNombre"></label>
+                                                            </dd>
+
+                                                            <dt>
+                                                                @Html.DisplayNameFor(model => model.Cliente.Ubicacion):
+                                                            </dt>
+
+                                                            <dd>
+                                                                <label id="lblUbicacion"></label>
+                                                            </dd>
+
+                                                            <dt>
+                                                                @Html.DisplayNameFor(model => model.Cliente.Url):
+                                                            </dt>
+
+                                                            <dd>
+                                                                <label id="lblUrl"></label>
+                                                            </dd>
+
+                                                            <dt>
+                                                                @Html.DisplayNameFor(model => model.Cliente.Email):
+                                                            </dt>
+
+                                                            <dd>
+                                                                <label id="lblEmail"></label>
+                                                            </dd>
+
+                                                        </dl>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="submit" name="submitButton" value="Cancelar" class="btn btn-default" data-dismiss="modal" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                        </td>
+                            <td>
+
+                                @Html.ActionLink("Eliminar", "Delete", new { id = item.ClienteID }, new { @class = "classImgEliminar", data_toggle = "tooltip", data_placement = "bottom", data_original_title = "Eliminar", onclick = "return confirm('Estas seguro de eliminar este cliente: " + item.Rut + "?');" })
+                                <!-- Modal -->
+                                <div class="modal fade" id="myModal2" role="dialog">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Eliminar Cliente!</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>¿Estas seguro de eliminar el Cliente @Html.DisplayFor(modelItem => item.Rut)?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="submit" data-id="@item.ClienteID" name="submitButton" value="Eliminar" class="btn btn-primary" />
+                                                <input type="submit" name="submitButton" value="Cancelar" class="btn btn-default" data-dismiss="modal" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            </tr>
+
+
+
+                }
+
+
+
+
+            </table>
+        </div>
+        if (Model.PageCount > 1)
+        {
+            <div class="pager">
+                @Html.PagedListPager(Model.PageCliente, page => Url.Action("Index", new
+   {
+       page,
+       Sorting_Order = ViewBag.currentSort,
+       q = ViewBag.currentSearch
+   }))
+                @*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount*@
+            </div>
+        }
+
+
+
+
+
+
+    }
+
+
+

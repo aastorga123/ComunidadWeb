@@ -37,9 +37,12 @@
                     @*<li>@Html.ActionLink("Inicio", "Index", "Home")</li>
                     <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
                     <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>*@
-                    <li>@Html.ActionLink("Cliente", "AddCliente", "Clientes")</li>
+
+                    @*<li>@Html.ActionLink("Cliente", "Index", "Clientes")</li>
                     <li>@Html.ActionLink("Programa", "Index", "Programas")</li>
-                    <li>@Html.ActionLink("Usuario", "Index", "Usuarios")</li>
+                    <li>@Html.ActionLink("Usuario", "Index", "Usuarios")</li>*@
+                    @Html.Action("Menu", "Programas")
+                    
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
@@ -48,7 +51,7 @@
                 </ul>
                    
                     @* @Html.Partial("_LoginPartial")*@
-</div>
+            </div>
         </div>
     </div>
 

@@ -1,0 +1,6 @@
+﻿@model MiComunidad.ViewModels.ProgramaView
+
+@foreach (var item in Model.Programas)
+{
+    <li>@Html.ActionLink(item.NombrePrograma,"Index", item.NombrePrograma + "s")</li>
+}

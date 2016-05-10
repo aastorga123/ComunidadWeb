@@ -48,7 +48,8 @@
                 <div class="panel-body">
 
                     @Html.Partial("Create")
-                    @*@Html.ActionLink("Create New", "Create")*@
+
+        
                 </div>
             </div>
 
@@ -66,8 +67,11 @@
             @Html.ActionLink("NombrePrograma", "Index", new { Sorting_Order = ViewBag.SortingNombrePrograma })
             @*@Html.DisplayNameFor(model => model.Programa.NombrePrograma)*@
         </th>
-        <th colspan="3">
+        <th>
             @Html.DisplayNameFor(model => model.Programa.DescripcionPrograma)
+        </th>
+        <th colspan="3">
+            @Html.DisplayNameFor(model => model.Programa.EstadoPrograma)
         </th>
         <th></th>
     </tr>
@@ -80,6 +84,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DescripcionPrograma)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstadoPrograma)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ProgramaID }, new { @class = "classImgEditar", data_toggle = "tooltip", data_placement = "bottom", data_original_title = "Editar" })
